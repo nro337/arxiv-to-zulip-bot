@@ -4,7 +4,8 @@ on:
   push:
     branches: ["master"]
   schedule:
-    - cron: "27 */1 * * *"
+    # Set cron to run every 3 hours
+    - cron: "2 */3 * * *"
 
 env:
   ZULIP_API_KEY: ${{ secrets.ZULIP_API_KEY }}

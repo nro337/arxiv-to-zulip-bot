@@ -10,7 +10,7 @@ ZULIP_STREAM_NAME = "articles"
 ZULIP_TOPIC_NAME = "New arXiv articles"
 
 # Define arXiv categories
-ARXIV_CATEGORIES = ["math.OA", "math.FA"]
+ARXIV_CATEGORIES = ["cs.AI", "cs.GL", "cs.HC", "cs.LG", "cs.LO", "cs.MA", "cs.SE"]
 
 
 # Function to send a message to Zulip
