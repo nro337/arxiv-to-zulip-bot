@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Define your Zulip credentials
 ZULIP_EMAIL = os.environ.get("ZULIP_EMAIL")
-ZULIP_STREAM_NAME = "articles"
+ZULIP_STREAM_NAME = "arxiv"
 ZULIP_TOPIC_NAME = "New arXiv articles"
 
 # Define arXiv categories
