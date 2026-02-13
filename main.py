@@ -66,7 +66,8 @@ def update_zulip_stream(category_list):
     if d.status == 200 and last_updated_article_link not in [
         article.link for article in d.entries
     ]:
-        articles = d.entries[:10]  # Limit to 10 papers per run
+        # Limit to 10 papers per run to avoid sending too many at once
+        articles = d.entries[:10]
         for article in articles:
             link = article.link
             title = (
