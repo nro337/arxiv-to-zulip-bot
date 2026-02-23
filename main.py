@@ -1,4 +1,5 @@
 import os
+from typing import Any, Dict
 import zulip
 import re
 import feedparser
@@ -11,6 +12,87 @@ ZULIP_TOPIC_NAME = "New arXiv articles"
 
 # Define arXiv categories
 ARXIV_CATEGORIES = ["cs.AI", "cs.GL", "cs.HC", "cs.LG", "cs.LO", "cs.MA", "cs.SE"]
+
+# Keywords for filtering XAI and related topics
+XAI_KEYWORDS = [
+    # Explainability and interpretability
+    "explainable",
+    "explainability",
+    "interpretable",
+    "interpretability",
+    "xai",
+    "lime",
+    "shap",
+    "gradcam",
+    "grad-cam",
+    "saliency",
+    "attention visualization",
+    "feature importance",
+    "model explanation",
+    "explain",
+    "explanation",
+    # Self-explanation and metacognition
+    "self-explanation",
+    "self-explaining",
+    "self-aware",
+    "metacognition",
+    "metacognitive",
+    "introspection",
+    "introspective",
+    # Human-AI interaction and teaming
+    "human-ai",
+    "human ai",
+    "human-centered ai",
+    "human-in-the-loop",
+    "human-computer interaction",
+    "human-machine",
+    "collaborative ai",
+    "mixed-initiative",
+    "human-ai teaming",
+    "human-robot teaming",
+    "human-agent",
+    "interactive machine learning",
+    # Trust and transparency
+    "trust",
+    "trustworthy",
+    "trustworthiness",
+    "transparency",
+    "transparent",
+    "accountability",
+    "accountable",
+    "fairness",
+    "fair ai",
+    "bias mitigation",
+    # Related concepts
+    "counterfactual",
+    "contrastive explanation",
+    "decision support",
+    "ai decision-making",
+    "rationale",
+    "justification",
+    "cognitive model",
+    "mental model",
+    "uncertainty quantification",
+    "confidence estimation",
+    "user understanding",
+    "comprehensibility",
+]
+
+
+def is_xai_related(title, summary):
+    """
+    Check if an article is related to XAI and similar topics based on keywords.
+    Returns True if the title or summary contains any of the XAI keywords.
+    """
+    # Combine title and summary for search, convert to lowercase
+    text = (title + " " + summary).lower()
+
+    # Check if any keyword appears in the text
+    for keyword in XAI_KEYWORDS:
+        if keyword.lower() in text:
+            return True
+
+    return False
 
 
 # Function to send a message to Zulip
@@ -87,6 +169,12 @@ def update_zulip_stream(category_list):
                 .replace("\n", " ")
                 .replace("😉", "\n  ")
             )
+
+            # Filter for XAI-related articles only
+            if not is_xai_related(title, summary):
+                print(f"Skipping non-XAI article: {title[:60]}...")
+                continue
+
             categories = ", ".join([i.term for i in article.tags])
             message = (
                 f"\n**[{title}]({link})**\n*{author}*\n\n{summary}\n\n*{categories}*"
